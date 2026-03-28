@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Myers-Briggs Type Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a2e;
+    --paper: #f5f0e8;
+    --accent: #c9423a;
+    --muted: #8a8070;
+    --card: #fffdf8;
+    --border: #d4cfc4;
+  }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+
+  header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: var(--accent);
+    margin: 1rem auto 0;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+  }
+
+  #progress-bar-wrap {
+    width: 100%;
+    max-width: 640px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  #progress-bar {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  #counter {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  #card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2rem 2.5rem;
+    max-width: 640px;
+    width: 100%;
+    box-shadow: 4px 4px 0 var(--border);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  #card.fade-out {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  #question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    min-height: 3em;
+  }
+
+  .scale-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .options {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .opt-btn {
+    flex: 1;
+    padding: 0.75rem 0.25rem;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+    border-radius: 3px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    transition: all 0.15s;
+    color: var(--ink);
+    position: relative;
+  }
+
+  .opt-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .opt-btn.selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  .opt-btn .dot-size {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    margin: 0 auto 4px;
+    opacity: 0.4;
+  }
+
+  .opt-btn:nth-child(1) .dot-size { width: 14px; height: 14px; opacity: 1; }
+  .opt-btn:nth-child(2) .dot-size { width: 10px; height: 10px; opacity: 0.7; }
+  .opt-btn:nth-child(3) .dot-size { width: 8px; height: 8px; opacity: 0.4; }
+  .opt-btn:nth-child(4) .dot-size { width: 8px; height: 8px; opacity: 0.4; }
+  .opt-btn:nth-child(5) .dot-size { width: 10px; height: 10px; opacity: 0.7; }
+  .opt-btn:nth-child(6) .dot-size { width: 14px; height: 14px; opacity: 1; }
+
+  #nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+
+  .nav-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.4rem;
+    border: 1px solid var(--ink);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--ink);
+  }
+
+  .nav-btn:hover { background: var(--ink); color: var(--paper); }
+  .nav-btn:disabled { opacity: 0.25; pointer-events: none; }
+  .nav-btn.primary { background: var(--ink); color: var(--paper); }
+  .nav-btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+
+  /* RESULTS */
+  #results {
+    display: none;
+    max-width: 700px;
+    width: 100%;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
+  .type-display {
+    text-align: center;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 3rem 2rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+  }
+
+  .type-letters {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(4rem, 12vw, 7rem);
+    letter-spacing: 0.15em;
+    line-height: 1;
+    color: white;
+  }
+
+  .type-name {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-top: 0.75rem;
+  }
+
+  .type-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .dims-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .dim-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.25rem;
+    box-shadow: 2px 2px 0 var(--border);
+  }
+
+  .dim-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .dim-result {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .dim-bar-wrap {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .dim-bar {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .dim-pct {
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  .desc-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1rem;
+    box-shadow: 2px 2px 0 var(--border);
+  }
+
+  .desc-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .desc-card p {
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: #333;
+  }
+
+  .strengths-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+  }
+
+  .strengths-list li {
+    font-size: 0.68rem;
+    padding: 0.25rem 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  .restart-btn {
+    display: block;
+    width: 100%;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 1rem;
+    border: 1px solid var(--ink);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-top: 1rem;
+  }
+
+  .restart-btn:hover { background: var(--ink); color: var(--paper); }
+
+  @media (max-width: 500px) {
+    .dims-grid { grid-template-columns: 1fr; }
+    #card { padding: 1.5rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="subtitle">Personality Assessment</p>
+  <h1>Myers–Briggs<br>Type Indicator</h1>
+</header>
+
+<div id="assessment">
+  <div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+  <div id="counter"></div>
+  <div id="card">
+    <p id="question-text"></p>
+    <div class="scale-wrap">
+      <div class="scale-labels"><span id="label-a"></span><span id="label-b"></span></div>
+      <div class="options" id="options"></div>
+    </div>
+    <div id="nav">
+      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">← Back</button>
+      <button class="nav-btn primary" id="next-btn" onclick="navigate(1)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<div id="results"></div>
+
+<script>
+const questions = [
+  // E/I
+  { dim: 'EI', pole: 'E', text: "At a party, you tend to...", a: "Talk to many people, including strangers", b: "Stick to a few people you know well" },
+  { dim: 'EI', pole: 'I', text: "After a long social event, you feel...", a: "Energized and ready for more", b: "Drained and in need of alone time" },
+  { dim: 'EI', pole: 'E', text: "You prefer to...", a: "Think out loud and talk through ideas", b: "Reflect internally before sharing" },
+  { dim: 'EI', pole: 'E', text: "In a meeting, you tend to...", a: "Speak up readily and frequently", b: "Listen carefully and speak when ready" },
+  { dim: 'EI', pole: 'E', text: "You draw energy from...", a: "Being around people and activity", b: "Solitude and quiet reflection" },
+
+  // S/N
+  { dim: 'SN', pole: 'N', text: "When solving a problem, you prefer to...", a: "Focus on concrete facts and details", b: "Look for patterns and future possibilities" },
+  { dim: 'SN', pole: 'S', text: "You are more interested in...", a: "What is real and tangible now", b: "What could be and what is possible" },
+  { dim: 'SN', pole: 'N', text: "You trust more...", a: "Practical experience and proven methods", b: "Intuition and theoretical frameworks" },
+  { dim: 'SN', pole: 'S', text: "You pay more attention to...", a: "Specific details and exact facts", b: "The big picture and overall meaning" },
+  { dim: 'SN', pole: 'N', text: "You are drawn to...", a: "Things that are concrete and realistic", b: "Ideas that are novel and imaginative" },
+
+  // T/F
+  { dim: 'TF', pole: 'T', text: "When making decisions, you prioritize...", a: "Logic, analysis, and objective criteria", b: "People's feelings and maintaining harmony" },
+  { dim: 'TF', pole: 'F', text: "You are more naturally...", a: "Objective and detached", b: "Empathetic and personal" },
+  { dim: 'TF', pole: 'T', text: "When giving feedback, you tend to be...", a: "Direct and straightforward", b: "Diplomatic and considerate of feelings" },
+  { dim: 'TF', pole: 'F', text: "You believe it's more important to be...", a: "Truthful, even if it's uncomfortable", b: "Tactful and considerate" },
+  { dim: 'TF', pole: 'T', text: "You are more annoyed by...", a: "Emotional reasoning and inconsistency", b: "Cold logic that ignores human needs" },
+
+  // J/P
+  { dim: 'JP', pole: 'J', text: "You prefer to...", a: "Plan ahead and stick to a schedule", b: "Stay flexible and adapt as you go" },
+  { dim: 'JP', pole: 'P', text: "Your workspace is typically...", a: "Organized and structured", b: "Adaptable and as-needed" },
+  { dim: 'JP', pole: 'J', text: "You feel more comfortable with...", a: "Clear goals and firm deadlines", b: "Open-ended options and spontaneity" },
+  { dim: 'JP', pole: 'P', text: "When starting a project, you prefer to...", a: "Create a detailed plan before beginning", b: "Jump in and figure it out as you go" },
+  { dim: 'JP', pole: 'J', text: "You find it more satisfying to...", a: "Complete tasks and check them off", b: "Keep options open as long as possible" },
+];
+
+const typeData = {
+  INTJ: { name: "The Architect", tagline: "Rare and strategic minds, every plan is deliberate", desc: "INTJs are analytical, insightful, and driven. They excel at long-range planning and see patterns others miss. They hold high standards and bring precision to everything they pursue.", strengths: ["Strategic thinking", "Independence", "Decisive", "Visionary", "Self-confident"] },
+  INTP: { name: "The Logician", tagline: "Innovative inventors with an unquenchable curiosity", desc: "INTPs are creative theorists who love exploring ideas. They are flexible thinkers with a knack for finding inconsistencies. They value logic above all and enjoy thought experiments.", strengths: ["Original thinker", "Open-minded", "Objective", "Analytical", "Imaginative"] },
+  ENTJ: { name: "The Commander", tagline: "Bold, imaginative leaders who always find a way", desc: "ENTJs are natural born leaders. They are charismatic, confident, and strategic. They quickly identify inefficiencies and drive toward ambitious goals with relentless determination.", strengths: ["Decisive", "Energetic", "Confident", "Strategic", "Inspiring"] },
+  ENTP: { name: "The Debater", tagline: "Smart, curious thinkers who cannot resist a challenge", desc: "ENTPs are quick-witted and love intellectual sparring. They are excellent brainstormers who champion unconventional ideas and thrive on challenging the status quo.", strengths: ["Innovative", "Persuasive", "Knowledgeable", "Energetic", "Original"] },
+  INFJ: { name: "The Advocate", tagline: "Quiet but visionary idealists, guided by principles", desc: "INFJs are compassionate and principled. They have a gift for seeing potential in people and situations. They work persistently toward their values-driven vision with quiet determination.", strengths: ["Insightful", "Principled", "Passionate", "Altruistic", "Creative"] },
+  INFP: { name: "The Mediator", tagline: "Poetic, kind and altruistic, always searching for meaning", desc: "INFPs are guided by their deeply held values and a genuine desire to help. They are imaginative and empathetic, bringing creativity to everything and finding connections between ideas.", strengths: ["Empathetic", "Creative", "Open-minded", "Passionate", "Dedicated"] },
+  ENFJ: { name: "The Protagonist", tagline: "Charismatic and inspiring, captivating the room", desc: "ENFJs are natural leaders who radiate warmth. They are genuinely interested in others and have a talent for bringing out the best in people. They are driven by a vision of a better world.", strengths: ["Charismatic", "Reliable", "Empathetic", "Organizational", "Altruistic"] },
+  ENFP: { name: "The Campaigner", tagline: "Enthusiastic, creative and sociable free spirits", desc: "ENFPs are enthusiastic and imaginative. They see life as full of possibilities. They make connections between events and information very quickly, and can inspire others with their energy.", strengths: ["Curious", "Energetic", "Creative", "Sociable", "Optimistic"] },
+  ISTJ: { name: "The Logistician", tagline: "Practical and fact-minded, reliable above all else", desc: "ISTJs are thorough, dependable, and systematic. They are committed to tradition and believe in duty. Their word is their bond and they take great pride in doing things correctly.", strengths: ["Responsible", "Thorough", "Dependable", "Traditional", "Calm"] },
+  ISFJ: { name: "The Defender", tagline: "Very dedicated and warm, always ready to protect", desc: "ISFJs are warm and dedicated. They take responsibilities seriously and are committed to the people around them. They are hardworking and perceptive, blending practical skills with genuine care.", strengths: ["Supportive", "Reliable", "Patient", "Observant", "Hardworking"] },
+  ESTJ: { name: "The Executive", tagline: "Excellent administrators, unsurpassed at managing", desc: "ESTJs are organized, practical, and direct. They value tradition and order, working to uphold rules and standards. They are decisive and take pride in bringing people together.", strengths: ["Dedicated", "Organized", "Honest", "Loyal", "Patient"] },
+  ESFJ: { name: "The Consul", tagline: "Extraordinarily caring, social and popular", desc: "ESFJs are warm and conscientious. They are highly attuned to others' feelings and work hard to make those around them comfortable. They are loyal and want to bring out the best in people.", strengths: ["Loyal", "Sensitive", "Warm", "Practical", "Dutiful"] },
+  ISTP: { name: "The Virtuoso", tagline: "Bold and practical experimenters, masters of tools", desc: "ISTPs are curious and versatile. They love to explore with their hands and eyes. They are observant, logical, and excellent troubleshooters — quiet until a problem needs solving.", strengths: ["Optimistic", "Creative", "Practical", "Spontaneous", "Direct"] },
+  ISFP: { name: "The Adventurer", tagline: "Flexible and charming artists, always open to new things", desc: "ISFPs are gentle and sensitive with a keen aesthetic sensibility. They live in the present, enjoying life's experiences while giving real-time support to those they care about.", strengths: ["Charming", "Sensitive", "Imaginative", "Flexible", "Passionate"] },
+  ESTP: { name: "The Entrepreneur", tagline: "Smart, energetic and perceptive, living on the edge", desc: "ESTPs are energetic and perceptive. They are excellent at reading people and situations and react quickly. They prefer action to long deliberation and thrive in dynamic environments.", strengths: ["Bold", "Rational", "Original", "Perceptive", "Direct"] },
+  ESFP: { name: "The Entertainer", tagline: "Spontaneous, energetic and enthusiastic entertainers", desc: "ESFPs are vivacious and fun. They love the spotlight and are genuinely enthusiastic about life. They bring joy to everyone around them and learn best through hands-on experience.", strengths: ["Bold", "Original", "Showmanship", "Practical", "Observant"] },
+};
+
+let answers = new Array(questions.length).fill(null);
+let current = 0;
+
+function render() {
+  const q = questions[current];
+  const pct = Math.round((current / questions.length) * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('counter').textContent = `Question ${current + 1} of ${questions.length}`;
+
+  const cardEl = document.getElementById('card');
+  cardEl.classList.add('fade-out');
+  setTimeout(() => {
+    document.getElementById('question-text').textContent = q.text;
+    document.getElementById('label-a').textContent = q.a;
+    document.getElementById('label-b').textContent = q.b;
+
+    const opts = document.getElementById('options');
+    opts.innerHTML = '';
+    const labels = ['Strongly A', 'Moderately A', 'Slightly A', 'Slightly B', 'Moderately B', 'Strongly B'];
+    for (let i = 0; i < 6; i++) {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn' + (answers[current] === i ? ' selected' : '');
+      btn.innerHTML = `<span class="dot-size"></span>${labels[i].replace(' A','').replace(' B','')}`;
+      btn.title = labels[i];
+      btn.onclick = () => selectAnswer(i);
+      opts.appendChild(btn);
+    }
+
+    document.getElementById('prev-btn').disabled = current === 0;
+    document.getElementById('next-btn').textContent = current === questions.length - 1 ? 'See Results →' : 'Next →';
+
+    cardEl.classList.remove('fade-out');
+  }, 200);
+}
+
+function selectAnswer(val) {
+  answers[current] = val;
+  document.querySelectorAll('.opt-btn').forEach((b, i) => b.classList.toggle('selected', i === val));
+}
+
+function navigate(dir) {
+  if (dir === 1 && answers[current] === null) {
+    document.getElementById('options').style.outline = '2px solid var(--accent)';
+    setTimeout(() => document.getElementById('options').style.outline = '', 800);
+    return;
+  }
+  if (dir === 1 && current === questions.length - 1) { showResults(); return; }
+  current = Math.max(0, Math.min(questions.length - 1, current + dir));
+  render();
+}
+
+function showResults() {
+  const scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+  questions.forEach((q, i) => {
+    const ans = answers[i]; // 0-5: 0,1,2 favor pole A, 3,4,5 favor pole B
+    const weight = [3, 2, 1, 1, 2, 3][ans];
+    if (q.dim === 'EI') {
+      if (q.pole === 'E') { ans < 3 ? scores.E += weight : scores.I += weight; }
+      else { ans < 3 ? scores.I += weight : scores.E += weight; }
+    } else if (q.dim === 'SN') {
+      if (q.pole === 'S') { ans < 3 ? scores.S += weight : scores.N += weight; }
+      else { ans < 3 ? scores.N += weight : scores.S += weight; }
+    } else if (q.dim === 'TF') {
+      if (q.pole === 'T') { ans < 3 ? scores.T += weight : scores.F += weight; }
+      else { ans < 3 ? scores.F += weight : scores.T += weight; }
+    } else {
+      if (q.pole === 'J') { ans < 3 ? scores.J += weight : scores.P += weight; }
+      else { ans < 3 ? scores.P += weight : scores.J += weight; }
+    }
+  });
+
+  const type =
+    (scores.E >= scores.I ? 'E' : 'I') +
+    (scores.S >= scores.N ? 'S' : 'N') +
+    (scores.T >= scores.F ? 'T' : 'F') +
+    (scores.J >= scores.P ? 'J' : 'P');
+
+  const info = typeData[type];
+
+  const dims = [
+    { pair: ['E','I'], labels: ['Extraversion','Introversion'], a: scores.E, b: scores.I },
+    { pair: ['S','N'], labels: ['Sensing','Intuition'], a: scores.S, b: scores.N },
+    { pair: ['T','F'], labels: ['Thinking','Feeling'], a: scores.T, b: scores.F },
+    { pair: ['J','P'], labels: ['Judging','Perceiving'], a: scores.J, b: scores.P },
+  ];
+
+  let dimsHTML = '<div class="dims-grid">';
+  dims.forEach(d => {
+    const total = d.a + d.b;
+    const domLetter = d.a >= d.b ? d.pair[0] : d.pair[1];
+    const domLabel = d.a >= d.b ? d.labels[0] : d.labels[1];
+    const pct = Math.round((Math.max(d.a, d.b) / total) * 100);
+    dimsHTML += `<div class="dim-card">
+      <div class="dim-label">${d.labels[0]} vs ${d.labels[1]}</div>
+      <div class="dim-result">${domLetter} — ${domLabel}</div>
+      <div class="dim-bar-wrap"><div class="dim-bar" style="width:${pct}%"></div></div>
+      <div class="dim-pct">${pct}% ${domLabel.toLowerCase()}</div>
+    </div>`;
+  });
+  dimsHTML += '</div>';
+
+  const strHTML = info.strengths.map(s => `<li>${s}</li>`).join('');
+
+  document.getElementById('assessment').style.display = 'none';
+  const res = document.getElementById('results');
+  res.style.display = 'block';
+  res.innerHTML = `
+    <div class="type-display">
+      <div class="type-letters">${type}</div>
+      <div class="type-name">${info.name}</div>
+      <div class="type-tagline">"${info.tagline}"</div>
+    </div>
+    ${dimsHTML}
+    <div class="desc-card">
+      <h3>Your Profile</h3>
+      <p>${info.desc}</p>
+      <ul class="strengths-list">${strHTML}</ul>
+    </div>
+    <div class="desc-card">
+      <h3>A note on MBTI</h3>
+      <p>This assessment is an unofficial approximation of the Myers-Briggs Type Indicator. The official MBTI is a proprietary instrument. Types exist on a spectrum — your result reflects tendencies, not absolutes. Many people find their type shifts over time or between contexts.</p>
+    </div>
+    <button class="restart-btn" onclick="restart()">← Retake Assessment</button>
+  `;
+}
+
+function restart() {
+  answers = new Array(questions.length).fill(null);
+  current = 0;
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('assessment').style.display = 'block';
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
