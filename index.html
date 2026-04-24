@@ -153,6 +153,32 @@
         radial-gradient(circle at 50% 40%, #006b5f 0%, transparent 50%);
     }
     .vertical-text { writing-mode: vertical-lr; }
+
+    /* ─── Nightly mockup styling ──────────────────────────────── */
+    .nightly-yellow { color: #d4ff00; }
+    .bg-nightly-yellow { background-color: #d4ff00; }
+    .nightly-wordmark {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #f4f4f5;
+    }
+    .nightly-glow-text {
+      text-shadow: 0 0 18px rgba(212, 255, 0, 0.45);
+    }
+    .nightly-screen {
+      background: #0b0d0c;
+      color: #e4e4e7;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    /* Tilt for the Nightly trio (desktop / tablet / phone composition) */
+    .nightly-tilt-desktop { transform: perspective(2400px) rotateY(-8deg) rotateX(4deg); transform-origin: center; }
+    .nightly-tilt-tablet  { transform: perspective(1800px) rotateY(-12deg) rotateX(4deg) rotateZ(-1deg); }
+    .nightly-tilt-phone   { transform: perspective(1400px) rotateY(-14deg) rotateX(4deg) rotateZ(-2deg); }
+    /* Three-form-factor floor reflection */
+    .device-shadow {
+      box-shadow: 0 40px 80px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset;
+    }
   </style>
 </head>
 <body class="bg-background text-on-surface font-body selection:bg-primary/30 overflow-x-hidden">
@@ -197,6 +223,7 @@
       <!-- md+ nav links -->
       <div class="hidden md:flex items-center gap-10">
         <a href="https://houseofyeti.com/settempo" class="hover:text-primary transition-colors text-[10px] tracking-[0.25em] uppercase text-emerald-100 font-semibold">SETTEMPO</a>
+        <a href="https://nightly.houseofyeti.com" class="hover:text-primary transition-colors text-[10px] tracking-[0.25em] uppercase text-emerald-100 font-semibold">NIGHTLY</a>
         <a href="https://lorenzociacci.com" target="_blank" rel="noopener" class="hover:text-primary transition-colors text-[10px] tracking-[0.25em] uppercase text-emerald-100 font-semibold">About</a>
         <a href="#" data-m="c" class="hover:text-primary transition-colors text-[10px] tracking-[0.25em] uppercase text-emerald-100 font-semibold">Contact</a>
       </div>
@@ -218,6 +245,7 @@
     <div id="mobile-menu" class="hidden md:hidden bg-surface-container-lowest/95 backdrop-blur-xl border-b border-white/5 px-6 py-8">
       <div class="flex flex-col gap-6">
         <a href="https://houseofyeti.com/settempo" class="text-[11px] tracking-[0.3em] uppercase text-settempo-gold font-bold">SETTEMPO</a>
+        <a href="https://nightly.houseofyeti.com" class="text-[11px] tracking-[0.3em] uppercase font-bold" style="color:#d4ff00">NIGHTLY</a>
         <a href="https://lorenzociacci.com" target="_blank" rel="noopener" class="text-[11px] tracking-[0.3em] uppercase text-emerald-100/70 font-bold hover:text-emerald-50 transition-colors">About</a>
         <a href="#" data-m="c" class="text-[11px] tracking-[0.3em] uppercase text-emerald-100/70 font-bold hover:text-emerald-50 transition-colors">Contact</a>
         <a href="#" data-m="c" class="mt-2 inline-block border border-white/20 px-6 py-3 text-[10px] tracking-[0.2em] uppercase font-bold rounded-full text-white bg-white/5 w-fit">Inquire</a>
@@ -229,12 +257,12 @@
   <main class="relative z-10 w-full">
 
     <!-- ══ MOBILE (< md) ═══════════════════════════════════════════════ -->
-    <div class="md:hidden min-h-screen flex flex-col items-center justify-center px-8 pt-24 pb-12">
+    <div class="md:hidden min-h-screen flex flex-col items-center justify-center px-8 pt-24 pb-16">
 
       <!-- Metadata row -->
       <div class="w-full max-w-sm mb-6 flex justify-between items-end">
         <div class="flex flex-col">
-          <span class="text-[10px] tracking-[0.3em] text-settempo-gold uppercase font-bold">Prototype 004</span>
+          <span class="text-[10px] tracking-[0.3em] uppercase font-bold text-settempo-gold">Prototype 004</span>
           <span class="text-[10px] tracking-[0.2em] text-on-surface-variant/50 uppercase mt-1">Release MMXXVI</span>
         </div>
         <div class="text-right">
@@ -243,19 +271,28 @@
         </div>
       </div>
 
-      <!-- Tilt card (portrait) -->
-      <div class="relative w-full max-w-[280px] aspect-[3/4] tilt-card">
-        <div class="absolute inset-0 border border-primary/20 rounded-xl z-10 pointer-events-none"></div>
+      <!-- Settempo tilt card (portrait) — featured first -->
+      <div class="relative w-full max-w-[280px] aspect-[3/4] tilt-card mb-12">
+        <div class="absolute inset-0 border border-settempo-gold/30 rounded-xl z-10 pointer-events-none"></div>
         <div class="absolute inset-0 rounded-xl overflow-hidden bg-surface-container-highest">
-          <img
-            src="images/settempo-app.jpg"
-            alt="SETTEMPO interface"
-            class="w-full h-full object-cover"
-          />
+          <img src="images/settempo-app.jpg" alt="SETTEMPO interface" class="w-full h-full object-cover"/>
           <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80"></div>
-          <div class="absolute bottom-0 left-0 p-6 w-full">
+          <div class="absolute bottom-0 left-0 p-5 w-full">
             <h2 class="text-4xl font-display font-bold text-settempo-gold uppercase tracking-wider glow-text leading-none mb-1">Settempo</h2>
             <p class="text-[10px] tracking-[0.3em] text-settempo-gold/70 uppercase font-display">Mobile Metronome</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nightly tilt card (secondary) -->
+      <div class="relative w-full max-w-[220px] aspect-[3/4] tilt-card opacity-80">
+        <div class="absolute inset-0 rounded-xl z-10 pointer-events-none" style="border:1px solid rgba(212,255,0,0.2)"></div>
+        <div class="absolute inset-0 rounded-xl overflow-hidden bg-[#0b0d0c]">
+          <div data-nightly-form="phone" style="padding:12px 10px;height:100%;overflow:hidden;"></div>
+          <div class="absolute inset-0 pointer-events-none" style="background:linear-gradient(180deg, rgba(11,13,12,0) 55%, rgba(11,13,12,0.92) 100%)"></div>
+          <div class="absolute bottom-0 left-0 p-5 w-full">
+            <h2 class="text-3xl font-display font-bold uppercase tracking-wider leading-none mb-1 nightly-glow-text" style="color:#d4ff00">Nightly</h2>
+            <p class="text-[9px] tracking-[0.3em] uppercase font-display" style="color:rgba(212,255,0,0.7)">Live music · 3 cities</p>
           </div>
         </div>
       </div>
@@ -265,6 +302,10 @@
         <a href="https://houseofyeti.com/settempo" class="group flex items-center gap-4 text-sm tracking-[0.4em] uppercase text-settempo-gold transition-all hover:text-white">
           <span class="h-[1px] w-8 bg-settempo-gold/50 group-hover:w-12 group-hover:bg-white transition-all"></span>
           Settempo
+        </a>
+        <a href="https://nightly.houseofyeti.com" class="group flex items-center gap-4 text-sm tracking-[0.4em] uppercase transition-all hover:text-white" style="color:#d4ff00">
+          <span class="h-[1px] w-8 group-hover:w-12 group-hover:bg-white transition-all" style="background:rgba(212,255,0,0.5)"></span>
+          Nightly
         </a>
         <a href="https://lorenzociacci.com" target="_blank" rel="noopener" class="group flex items-center gap-4 text-sm tracking-[0.4em] uppercase text-on-surface-variant/60 transition-all hover:text-settempo-gold">
           <span class="h-[1px] w-4 bg-outline-variant group-hover:w-8 group-hover:bg-settempo-gold transition-all"></span>
@@ -282,22 +323,23 @@
     </div>
 
     <!-- ══ TABLET (md → lg) ════════════════════════════════════════════ -->
-    <div class="hidden md:flex lg:hidden min-h-screen items-center pt-20">
-      <div class="container mx-auto px-12 grid grid-cols-12 items-center gap-12">
+    <!-- ══ TABLET (md → lg) ════════════════════════════════════════════ -->
+    <div class="hidden md:flex lg:hidden flex-col pt-24 pb-12 gap-24">
 
-        <!-- Left: copy + CTAs -->
-        <div class="col-span-5 flex flex-col items-start space-y-8">
+      <!-- Tablet: Settempo section (featured first) -->
+      <div class="container mx-auto px-12 grid grid-cols-12 items-center gap-12">
+        <div class="col-span-5 flex flex-col items-start space-y-6">
           <div class="space-y-2">
             <h1 class="text-on-background font-headline italic text-3xl md:text-4xl tracking-tight">House of Yeti</h1>
-            <p class="text-tertiary font-label tracking-[0.4em] text-[10px] font-bold uppercase">PROTOTYPE 004 / SETTEMPO</p>
+            <p class="text-settempo-gold font-label tracking-[0.4em] text-[10px] font-bold uppercase">PROTOTYPE 004 / SETTEMPO</p>
             <p class="pt-4 text-tertiary font-label tracking-[0.4em] text-[10px] font-bold uppercase">
               Distantly <span class="text-primary italic">Accessible</span>
             </p>
           </div>
           <p class="text-on-surface-variant text-sm leading-relaxed tracking-wide font-light max-w-md">
-            A precision metronome reimagined for the modern composer. Dark glass aesthetics meet tropical precision, creating a rhythmic companion that feels more like an instrument than a tool.
+            A precision metronome reimagined for the modern composer. Dark glass aesthetics meet tropical precision.
           </p>
-          <div class="flex flex-wrap gap-4 pt-4">
+          <div class="flex flex-wrap gap-4">
             <a href="https://houseofyeti.com/settempo" class="px-8 py-3 bg-gradient-to-r from-primary to-primary-container text-on-primary text-[10px] font-bold tracking-[0.2em] uppercase rounded-md shadow-lg shadow-primary/10 hover:scale-105 transition-transform duration-300">
               LAUNCH METRONOME
             </a>
@@ -306,32 +348,61 @@
             </a>
           </div>
         </div>
-
-        <!-- Right: landscape card -->
         <div class="col-span-7 flex justify-end items-center">
-          <div class="relative group w-full max-w-[600px]">
+          <div class="relative group w-full max-w-[480px]">
             <div class="absolute -inset-1 bg-gradient-to-br from-primary/20 via-transparent to-tertiary/20 rounded-xl blur-xl opacity-50 group-hover:opacity-100 transition duration-1000"></div>
             <div class="relative rounded-xl overflow-hidden border border-outline-variant/20 bg-surface-container-highest shadow-2xl aspect-[1184/864]">
-              <img
-                src="images/settempo-app.jpg"
-                alt="SETTEMPO metronome interface"
-                class="w-full h-full object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-700"
-              />
-              <div class="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-background/90 to-transparent">
+              <img src="images/settempo-app.jpg" alt="SETTEMPO metronome interface" class="w-full h-full object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-700"/>
+              <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-background/90 to-transparent">
                 <div class="flex justify-between items-end">
                   <div>
                     <p class="text-[10px] font-bold tracking-[0.4em] text-primary mb-1 uppercase">SETTEMPO INTERFACE</p>
-                    <h3 class="font-headline text-2xl text-on-background">Mobile Metronome</h3>
+                    <h3 class="font-headline text-xl text-on-background">Mobile Metronome</h3>
                   </div>
-                  <a href="https://houseofyeti.com/settempo" class="w-10 h-10 rounded-full border border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-colors" aria-label="Launch Settempo">
-                    <span class="material-symbols-outlined text-white text-sm" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
-                  </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <!-- Tablet: Nightly section (secondary) -->
+      <div class="container mx-auto px-12 grid grid-cols-12 items-center gap-10">
+        <div class="col-span-5 flex flex-col items-start space-y-6">
+          <p class="font-label tracking-[0.4em] text-[10px] font-bold uppercase" style="color:#d4ff00">PROTOTYPE 005 / NIGHTLY</p>
+          <p class="text-on-surface-variant text-sm leading-relaxed tracking-wide font-light max-w-md">
+            A nightly transmission from three cities. Nightly listens for live music across Los Angeles, Portland, and New York and returns what the night has to offer. Pick a city, a date, a sound — the rest assembles itself.
+          </p>
+          <div class="flex flex-wrap gap-4 pt-2">
+            <a href="https://nightly.houseofyeti.com" class="px-8 py-3 text-[10px] font-bold tracking-[0.2em] uppercase rounded-md hover:scale-105 transition-transform duration-300" style="background:#d4ff00; color:#0b0d0c; box-shadow:0 0 25px rgba(212,255,0,0.25)">
+              LAUNCH NIGHTLY
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: tropical-framed card -->
+        <div class="col-span-7 flex justify-end items-center">
+          <div class="relative w-full max-w-[600px]">
+            <div class="absolute -inset-6 rounded-[2rem] blur-[60px] opacity-35 pointer-events-none" style="background:radial-gradient(circle at 30% 50%, rgba(212,255,0,0.25), transparent 70%), radial-gradient(circle at 80% 50%, rgba(131,213,198,0.15), transparent 70%)"></div>
+
+            <!-- Foliage frame -->
+            <div class="absolute -inset-7 rounded-[1.75rem] overflow-hidden pointer-events-none" style="background-image:url('images/bg-foliage.jpg'); background-size:cover; background-position:center; opacity:0.55; filter:brightness(1.1) saturate(1.4) hue-rotate(15deg) contrast(1.1);"></div>
+            <div class="absolute -inset-7 rounded-[1.75rem] pointer-events-none" style="background:radial-gradient(ellipse at center, #0b0d0c 32%, rgba(11,13,12,0.85) 60%, transparent 95%)"></div>
+
+            <div class="relative device-shadow rounded-xl overflow-hidden border border-white/10 bg-[#0b0d0c]" style="aspect-ratio: 16/10;">
+              <div class="nightly-screen p-3 absolute inset-0" style="overflow:hidden;" data-nightly-form="tablet"></div>
+              <div class="absolute left-0 right-0 bottom-0 pointer-events-none" style="height:80px; background:linear-gradient(180deg, transparent 0%, #0b0d0c 50%, #0b0d0c 100%)"></div>
+              <div class="absolute inset-0 pointer-events-none" style="background:linear-gradient(135deg, rgba(212,255,0,0.04), transparent 40%, transparent 60%, rgba(131,213,198,0.05))"></div>
+              <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end pointer-events-none">
+                <div class="space-y-0.5">
+                  <div class="text-[8px] tracking-[0.4em] uppercase font-bold" style="color:#d4ff00">Live Interface</div>
+                  <div class="text-xs font-light text-white/70">nightly.houseofyeti.com</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- ══ DESKTOP (lg+) ═══════════════════════════════════════════════ -->
@@ -414,6 +485,72 @@
           </div>
         </div>
       </section>
+
+      <!-- Nightly section -->
+      <section class="py-24 xl:py-36" id="nightly">
+        <div class="grid grid-cols-12 gap-12 xl:gap-20 items-center">
+
+          <!-- Left: copy + CTAs -->
+          <div class="col-span-5 space-y-8">
+            <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/5 text-[10px] tracking-widest uppercase font-bold" style="color:#d4ff00">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-30" style="background:#d4ff00"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2" style="background:#d4ff00"></span>
+              </span>
+              Prototype 005 · Nightly
+            </div>
+            <div class="space-y-4">
+              <h2 class="nightly-wordmark nightly-glow-text text-5xl xl:text-7xl leading-none">Nightly</h2>
+              <div class="h-px w-24" style="background:rgba(212,255,0,0.25)"></div>
+              <p class="text-[10px] tracking-[0.45em] uppercase font-bold text-on-surface-variant/70">Live music · LA · Portland · New York</p>
+            </div>
+            <p class="text-on-surface-variant/70 text-base xl:text-lg font-light max-w-lg leading-relaxed">
+              A nightly transmission from three cities. Nightly listens for live music across Los Angeles, Portland, and New York and returns what the night has to offer. Pick a city, a date, a sound — the rest assembles itself.
+            </p>
+            <ul class="text-on-surface-variant/60 text-sm space-y-2 font-light">
+              <li class="flex items-center gap-3"><span class="h-px w-4 bg-on-surface-variant/30"></span>Multi-source aggregation, deduplicated</li>
+              <li class="flex items-center gap-3"><span class="h-px w-4 bg-on-surface-variant/30"></span>Responsive across desktop, tablet, phone</li>
+              <li class="flex items-center gap-3"><span class="h-px w-4 bg-on-surface-variant/30"></span>No login. No tracking. Just shows.</li>
+            </ul>
+            <div class="flex flex-wrap gap-4 pt-2">
+              <a href="https://nightly.houseofyeti.com" class="px-8 py-3 text-surface text-[11px] tracking-[0.2em] uppercase font-black rounded-xl hover:scale-105 active:scale-95 transition-all duration-300" style="background:#d4ff00; box-shadow:0 0 30px rgba(212,255,0,0.3)">
+                LAUNCH NIGHTLY
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: tropical-framed card -->
+          <div class="col-span-7 relative">
+            <!-- Soft tropical glow (yellow-green + emerald) -->
+            <div class="absolute -inset-12 rounded-[3rem] blur-[80px] opacity-30 pointer-events-none" style="background:radial-gradient(ellipse at 30% 50%, rgba(212,255,0,0.28), transparent 65%), radial-gradient(ellipse at 80% 60%, rgba(131,213,198,0.22), transparent 70%)"></div>
+
+            <!-- Foliage frame: silhouetted palms peeking behind corners -->
+            <div class="absolute -inset-10 rounded-[2.5rem] overflow-hidden pointer-events-none" style="background-image:url('images/bg-foliage.jpg'); background-size:cover; background-position:center; opacity:0.55; filter:brightness(1.1) saturate(1.4) hue-rotate(15deg) contrast(1.1);"></div>
+            <!-- Inner mask so foliage only shows at the edges (tighter so corners read) -->
+            <div class="absolute -inset-10 rounded-[2.5rem] pointer-events-none" style="background:radial-gradient(ellipse at center, #0b0d0c 35%, rgba(11,13,12,0.85) 60%, transparent 95%)"></div>
+
+            <!-- Card -->
+            <div class="relative device-shadow rounded-2xl overflow-hidden border border-white/10 bg-[#0b0d0c]" style="aspect-ratio: 16/10;">
+              <div class="nightly-screen p-5 absolute inset-0" style="overflow:hidden;" data-nightly-form="desktop"></div>
+              <!-- Bottom solid + fade so caption always sits over solid black -->
+              <div class="absolute left-0 right-0 bottom-0 pointer-events-none" style="height:120px; background:linear-gradient(180deg, transparent 0%, #0b0d0c 40%, #0b0d0c 100%)"></div>
+              <!-- Subtle inner highlight, tropical tint -->
+              <div class="absolute inset-0 pointer-events-none" style="background:linear-gradient(135deg, rgba(212,255,0,0.04), transparent 40%, transparent 60%, rgba(131,213,198,0.05))"></div>
+              <!-- Bottom corner caption inside the frame -->
+              <div class="absolute bottom-5 left-6 right-6 flex justify-between items-end pointer-events-none">
+                <div class="space-y-1">
+                  <div class="text-[9px] tracking-[0.5em] uppercase font-bold" style="color:#d4ff00">Live Interface</div>
+                  <div class="text-base font-light text-white/80">nightly.houseofyeti.com</div>
+                </div>
+                <a href="https://nightly.houseofyeti.com" class="flex-shrink-0 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 hover:border-[#d4ff00]/60 transition-colors pointer-events-auto" aria-label="Launch Nightly">
+                  <span class="material-symbols-outlined text-base" style="color:rgba(212,255,0,0.9)">arrow_outward</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 
@@ -445,6 +582,121 @@
     <div class="w-px h-24 bg-gradient-to-b from-transparent via-primary/50 to-transparent"></div>
     <span class="vertical-text text-[8px] tracking-[1em] uppercase text-primary font-bold">The Tropics</span>
   </div>
+
+  <!-- ── Nightly mockup data + renderer ──────────────────────────────── -->
+  <script id="nightly-data" type="application/json">
+  {
+    "shows": [
+      { "time": "5:00 PM",  "title": "Anthony Gomes \u201CPraise The Loud\u201D 2026 World Tour", "venue": "Hawthorne Theatre · Portland", "src": "VN",  "kind": "" },
+      { "time": "6:25 PM",  "title": "Palace",                                                  "venue": "Crystal Ballroom · Portland",   "src": "VN",  "kind": "" },
+      { "time": "6:35 PM",  "title": "Eugene Emeralds at Hillsboro Hops",                       "venue": "Hillsboro Ballpark · Hillsboro","src": "SG",  "kind": "SPORTS" },
+      { "time": "7:00 PM",  "title": "Andrew Oliver (21+)",                                     "venue": "Jack London Revue · Portland",  "src": "SG",  "kind": "CONCERT" },
+      { "time": "7:00 PM",  "title": "Mae Martin",                                              "venue": "Newmark Theatre · Portland",    "src": "SG",  "kind": "THEATER" },
+      { "time": "7:00 PM",  "title": "Sign o\u2019 the Times",                                  "venue": "Crystal Ballroom · Portland",   "src": "VN",  "kind": "" },
+      { "time": "7:30 PM",  "title": "Fat Ham — Portland, ME",                                  "venue": "U.S. Bank Main Stage · Portland","src": "SG", "kind": "THEATER" },
+      { "time": "7:30 PM",  "title": "San Antonio Spurs at Portland Trail Blazers",             "venue": "Moda Center · Portland",        "src": "SG",  "kind": "SPORTS" },
+      { "time": "8:00 PM",  "title": "Langhorne Slim & The Law",                                "venue": "Wonder Ballroom · Portland",    "src": "SG",  "kind": "CONCERT" }
+    ]
+  }
+  </script>
+
+  <script>
+    // Render the Nightly UI mockup at three form factors.
+    (function() {
+      const data = JSON.parse(document.getElementById('nightly-data').textContent);
+
+      const sourceColor = {
+        TM: { bg: 'rgba(96,165,250,0.12)',  bd: 'rgba(96,165,250,0.5)',  fg: '#7eb0ff' }, // Ticketmaster blue
+        SG: { bg: 'rgba(248,113,113,0.12)', bd: 'rgba(248,113,113,0.55)', fg: '#fda4a4' }, // SeatGeek red
+        VN: { bg: 'rgba(251,146,60,0.12)',  bd: 'rgba(251,146,60,0.55)',  fg: '#fbbf83' }, // Venues orange
+        GE: { bg: 'rgba(74,222,128,0.12)',  bd: 'rgba(74,222,128,0.55)',  fg: '#86efac' }  // Google green
+      };
+      const SOURCE_LABEL = { TM: 'Ticketmaster', SG: 'SeatGeek', VN: 'Venues', GE: 'Google Events' };
+
+      function pill(label, color, active) {
+        return `<span style="display:inline-flex;align-items:center;gap:0.4em;padding:0.18em 0.7em;border:1px solid ${color.bd};border-radius:999px;background:${active ? color.bg : 'transparent'};color:${color.fg};font-size:inherit;font-weight:600;line-height:1;white-space:nowrap;">
+          <span style="width:0.45em;height:0.45em;border-radius:50%;background:${color.fg}"></span>${label}
+        </span>`;
+      }
+
+      function tab(label, active) {
+        return `<span style="font-weight:800;letter-spacing:0.06em;color:${active ? '#d4ff00' : 'rgba(228,228,231,0.45)'};${active ? 'border-bottom:2px solid #d4ff00;padding-bottom:0.25em;' : 'padding-bottom:calc(0.25em + 2px);'}">${label}</span>`;
+      }
+
+      function badge(src, kind) {
+        const c = sourceColor[src] || sourceColor.VN;
+        return `<div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.25em;flex-shrink:0;">
+          <span style="display:inline-block;padding:0.15em 0.45em;border:1px solid ${c.bd};border-radius:3px;color:${c.fg};font-weight:800;font-size:0.85em;letter-spacing:0.02em;line-height:1.2;">${src}</span>
+          ${kind ? `<span style="font-size:0.7em;letter-spacing:0.15em;color:rgba(228,228,231,0.4);font-weight:700;">${kind}</span>` : ''}
+        </div>`;
+      }
+
+      function showsList(rows, opts) {
+        const limit = opts.limit || rows.length;
+        const compact = opts.compact;
+        return rows.slice(0, limit).map(s => `
+          <div style="display:grid;grid-template-columns:${compact ? '52px 1fr auto' : '70px 1fr auto'};gap:${compact ? '10px' : '16px'};align-items:center;padding:${compact ? '8px 0' : '14px 0'};border-bottom:1px solid rgba(255,255,255,0.05);">
+            <div style="color:rgba(228,228,231,0.5);font-size:${compact ? '0.7em' : '0.85em'};font-weight:500;letter-spacing:-0.01em;">${s.time}</div>
+            <div style="min-width:0;">
+              <div style="color:#fafafa;font-weight:600;font-size:${compact ? '0.78em' : '0.95em'};line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.title}</div>
+              <div style="color:rgba(228,228,231,0.45);font-size:${compact ? '0.65em' : '0.78em'};margin-top:2px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.venue}</div>
+            </div>
+            ${badge(s.src, s.kind)}
+          </div>
+        `).join('');
+      }
+
+      function header(scale, showCities) {
+        return `
+          <div style="display:flex;flex-direction:column;gap:${4 * scale}px;margin-bottom:${14 * scale}px;">
+            <div style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:${36 * scale}px;letter-spacing:-0.03em;color:#fafafa;line-height:1;">NIGHTLY</div>
+            <div style="font-size:${8.5 * scale}px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(228,228,231,0.4);font-weight:600;">Live Music · LA · Portland · New York ·</div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,0.08);margin-bottom:${12 * scale}px;"></div>
+          ${showCities ? `<div style="display:flex;gap:${20 * scale}px;font-size:${10 * scale}px;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:${14 * scale}px;">
+            ${tab('LOS ANGELES', false)}
+            ${tab('PORTLAND', true)}
+            ${tab('NEW YORK', false)}
+          </div>` : ''}
+        `;
+      }
+
+      function controls(scale, full) {
+        return `
+          <div style="display:${full ? 'grid' : 'flex'};${full ? `grid-template-columns: 1.4fr 1.2fr 0.8fr;` : 'flex-direction:column;'}gap:${8 * scale}px;margin-bottom:${12 * scale}px;">
+            <div style="background:#161616;border:1px solid rgba(255,255,255,0.06);border-radius:4px;padding:${8 * scale}px ${10 * scale}px;font-size:${10 * scale}px;color:rgba(228,228,231,0.85);">04/24/2026 <span style="float:right;opacity:0.4;">📅</span></div>
+            <div style="background:#161616;border:1px solid rgba(255,255,255,0.06);border-radius:4px;padding:${8 * scale}px ${10 * scale}px;font-size:${10 * scale}px;color:rgba(228,228,231,0.6);">All genres <span style="float:right;opacity:0.4;">▾</span></div>
+            <button style="background:#d4ff00;color:#0b0d0c;border:0;border-radius:4px;padding:${8 * scale}px ${10 * scale}px;font-weight:800;font-size:${10 * scale}px;letter-spacing:0.18em;text-transform:uppercase;cursor:default;">Search</button>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:${6 * scale}px;font-size:${8.5 * scale}px;margin-bottom:${4 * scale}px;">
+            <div style="display:flex;gap:${6 * scale}px;flex-wrap:wrap;">
+              ${pill('TICKETMASTER', sourceColor.TM, true)}
+              ${pill('SEATGEEK',     sourceColor.SG, true)}
+              ${pill('VENUES',       sourceColor.VN, true)}
+              ${pill('GOOGLE EVENTS',sourceColor.GE, true)}
+            </div>
+            <div style="font-size:${9 * scale}px;letter-spacing:0.2em;color:rgba(228,228,231,0.45);font-weight:600;">28 SHOWS</div>
+          </div>
+          <div style="font-size:${8.5 * scale}px;color:rgba(228,228,231,0.4);margin-bottom:${10 * scale}px;letter-spacing:0.04em;">28 shows · Friday, April 24 · SG: 16 · Venues: 3 · Google: 10</div>
+        `;
+      }
+
+      // Render each form factor
+      document.querySelectorAll('[data-nightly-form]').forEach(el => {
+        const form = el.dataset.nightlyForm;
+        let scale, limit, compact, full;
+        if (form === 'desktop') { scale = 1.0; limit = 5;  compact = false; full = true;  }
+        if (form === 'tablet')  { scale = 0.55; limit = 7; compact = true;  full = true;  }
+        if (form === 'phone')   { scale = 0.32; limit = 6; compact = true;  full = false; }
+
+        el.innerHTML = `
+          ${header(scale, true)}
+          ${controls(scale, full)}
+          <div>${showsList(data.shows, { limit, compact })}</div>
+        `;
+      });
+    })();
+  </script>
 
   <script>
     // Obfuscated contact links — assembled at runtime, never in HTML source
